@@ -792,18 +792,15 @@ proc to*(b: Bson, T: typedesc): T =
             var key = k
             when val.hasCustomPragma(dbKey):
                 key = val.getCustomPragmaVal(dbKey)
-            if key notin b:
-                raise newException(Exception, "Key " & key & " not found for " & $T)
-            val = b[key].to(type(val))
+            if key in b:
+                val = b[key].to(type(val))
     elif T is object|tuple:
         for k, val in fieldPairs(result):
             var key = k
             when val.hasCustomPragma(dbKey):
                 key = val.getCustomPragmaVal(dbKey)
-            if key notin b:
-                raise newException(Exception, "Key " & key & " not found for " & $T)
-            val = b[key].to(type(val))
-
+            if key in b:
+                val = b[key].to(type(val))
     else:
         {.error: "Unknown type".}
 
