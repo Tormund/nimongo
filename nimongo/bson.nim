@@ -446,7 +446,7 @@ template toBson*(b: Bson): Bson = b
     ##
 
 proc toBsonAUX*(keyVals: openArray[tuple[key: string, val: Bson]]): Bson =
-    ## Generic constructor for BSON data.	
+    ## Generic constructor for BSON data.
     result = newBsonDocument()
     for key, val in items(keyVals): result[key] = val
 
@@ -760,6 +760,8 @@ proc to*(b: Bson, T: typedesc): T =
             inc i
     elif T is string:
         result = b.toString
+    elif T is Oid:
+        result = b.toOid
     elif T is int|int8|int16|int32|uint|uint8|uint16|uint32:
         when b.toInt is T:
             result = b.toInt
